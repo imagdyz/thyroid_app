@@ -109,6 +109,31 @@ class ApiService {
     }
   }
 
+  static Future<List<dynamic>> getDiagnoses({int? limit}) async {
+    final prefs = await SharedPreferences.getInstance();
+    final userId = prefs.getInt('user_id');
+
+    if (userId == null) return [];
+
+    String url = '$baseUrl/get_diagnoses.php?user_id=$userId';
+    if (limit != null) {
+      url += '&limit=$limit';
+    }
+
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        if (data['status'] == 'success') {
+          return data['data'];
+        }
+      }
+    } catch (e) {
+      print('GET DIAGNOSES EXCEPTION: $e');
+    }
+    return [];
+  }
+
   static Future<void> logout() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('user_id');

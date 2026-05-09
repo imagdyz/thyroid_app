@@ -4,19 +4,29 @@ import '../../analysis/screens/analysis_screen.dart';
 import '../../symptoms/screens/symptoms_screen.dart';
 import '../../auth/screens/welcome_screen.dart';
 import '../../../data/services/api_service.dart';
+import '../../patient/screens/archive_screen.dart';
 
 class MainDashboardScreen extends StatefulWidget {
-  const MainDashboardScreen({super.key});
+  final int initialIndex;
+  const MainDashboardScreen({super.key, this.initialIndex = 0});
   @override
   State<MainDashboardScreen> createState() => _MainDashboardScreenState();
 }
 class _MainDashboardScreenState extends State<MainDashboardScreen> {
-  int currentIndex = 0;
+  late int currentIndex;
   final List<Widget> pages = const [
     HomeScreen(),
     SymptomsPage(),
     AnalysisScreen(),
+    ArchiveScreen(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    currentIndex = widget.initialIndex;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,8 +55,9 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
       body: pages[currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.blue.shade50,
-        selectedItemColor: Colors.black,
+        selectedItemColor: Colors.blue.shade900,
         unselectedItemColor: Colors.grey,
+        type: BottomNavigationBarType.fixed,
         currentIndex: currentIndex,
         onTap: (index) {
           setState(() {
@@ -65,6 +76,10 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
           BottomNavigationBarItem(
             icon: Icon(Icons.science),
             label: "التحاليل",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.history),
+            label: "الأرشيف",
           ),
         ],
       ),

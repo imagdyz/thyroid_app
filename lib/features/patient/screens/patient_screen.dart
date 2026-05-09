@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../data/services/api_service.dart';
+import '../../dashboard/screens/main_dashboard_screen.dart';
 
 class PatientScreen extends StatefulWidget {
   final String diagnosisResult;
@@ -61,8 +62,13 @@ class _PatientScreenState extends State<PatientScreen> {
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.pop(ctx);
-                    Navigator.pop(context);
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const MainDashboardScreen(initialIndex: 3),
+                      ),
+                      (route) => false,
+                    );
                   },
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
                   child: const Text("موافق", style: TextStyle(color: Colors.white)),
